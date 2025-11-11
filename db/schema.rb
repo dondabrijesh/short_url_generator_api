@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_11_095443) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_11_140330) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -29,6 +29,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_11_095443) do
     t.integer "clicks_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["original_url"], name: "idx_unique_active_original_url", unique: true, where: "(deactivated_at IS NULL)"
+    t.index ["short_code"], name: "index_short_urls_on_short_code", unique: true
   end
 
   add_foreign_key "clicks", "short_urls"
