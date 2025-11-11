@@ -1,24 +1,80 @@
-# README
+# URL Shortener API (Rails + PostgreSQL)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A production‑ready Rails API for shortening URLs, managing their lifecycle, tracking clicks, and serving timezone‑aware analytics.
 
-Things you may want to cover:
+## ✨ Highlights
 
-* Ruby version
+- Shorten URLs – create short codes with unique constraint, no duplicate active URLs.
+- Batch support – shorten multiple URLs in a single request.
+- Redirect + Click tracking – logs IP, user agent, referer.
+- Analytics – total and date‑range click counts with timezone‑aware filtering, supporting both IANA identifiers (e.g., Europe/Paris) and ISO 8601 offsets (+05:30, -08:00, Z).
+- Deactivation – deactivate existing short URLs; allows re‑shortening the same original URL.
+- Consistent JSON responses and proper HTTP status codes.
 
-* System dependencies
+## Setup Instructions
 
-* Configuration
+### Requirements
 
-* Database creation
+* Ruby 3+
+* Rails 7+
+* PostgreSQL
 
-* Database initialization
+### Setup
 
-* How to run the test suite
+```bash
+# Clone repository
+git clone https://github.com/dondabrijesh/short_url_generator_api.git
+cd url_shortener_api
 
-* Services (job queues, cache servers, search engines, etc.)
+# Install dependencies
+bundle install
 
-* Deployment instructions
+# Create and migrate DB
+bin/rails db:create db:migrate
 
-* ...
+# run the server
+bin/rails s
+
+```
+## EndPoints
+### 1. Create Short URLs
+```POST /api/v1/short_url ``` 
+
+```bash
+curl --location 'localhost:3000/api/v1/short_url' \
+--header 'Content-Type: application/json' \
+--data '{
+    "urls":["https://www.google.com/"] //Mandatory
+    
+}'
+```
+
+### 2. Deactivate URL
+```PATCH /api/v1/short_url/:code ```
+
+```bash
+curl --location --request PATCH 'localhost:3000/api/v1/short_url/L0ZXn0l' \
+--data ''
+```
+
+
+### 3. Analytics
+```PATCH /api/v1/short_url/analytics ```
+
+```bash
+curl --location --request GET 'localhost:3000/api/v1/short_url/analytics' \
+--header 'Content-Type: application/json' \
+--data '{
+    "start_date": "04-11-2025", //Not Mandatory
+    "end_date": "05-11-2025", //Not Mandatory
+    "timezoe": "Europe/Paris" //Not Mandatory
+}'
+```
+
+
+### 4. Redirect to Original URL
+```GET /:code ```
+
+```bash
+curl -i http://localhost:3000/Ab12Cd3
+```
