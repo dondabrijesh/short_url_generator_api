@@ -1,6 +1,7 @@
 module Url
   class AnalyticsService
     def initialize(start_date, end_date, timezone = "UTC")
+      binding.pry
       @timezone = Utils.new(timezone).timezone_parser
       @start_time = @timezone.parse(start_date)&.beginning_of_day&.utc if @start_time.present?
       @end_time = @timezone.parse(end_date)&.end_of_day&.utc if @end_time.present?
