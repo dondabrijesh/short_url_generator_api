@@ -20,10 +20,7 @@ module Url
       short_url = ShortUrl.active.find_by(short_code: @short_url_code)
       raise ActiveRecord::RecordNotFound, "Short URL not found or deactivated" unless short_url
 
-      # short_url.clicks.create!(clicked_at: Time.current)
-      short_url.clicks.create!(clicked_at: Time.utc(2025, 11, 10, 23, 30))  # ✅ Nov 11 05:00 in Kolkata
-      short_url.clicks.create!(clicked_at: Time.utc(2025, 11, 11, 1, 0))   # ✅ Nov 11 06:30 in Kolkata
-      short_url.clicks.create!(clicked_at: Time.utc(2025, 11, 11, 22, 0))  # ❌ Nov 12 03:30 in Kolkata
+      short_url.clicks.create!(clicked_at: Time.current)
 
       short_url.increment!(:clicks_count)
 
